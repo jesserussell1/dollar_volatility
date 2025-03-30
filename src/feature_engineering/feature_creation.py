@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import os
 
 def create_volatility_feature(data):
     """
@@ -101,6 +103,15 @@ def create_features(data):
         data = create_moving_average_feature(data)
         data = create_momentum_feature(data)
         data = create_bollinger_bands_feature(data)
+
+        # Save the updated data as a new CSV file
+        processed_data_folder = '/home/jesse-russell/PycharmProjects/VolatilityProject/data/processed'
+        if not os.path.exists(processed_data_folder):
+            os.makedirs(processed_data_folder)
+        filename = 'volatility_data_with_features.csv'
+        filepath = os.path.join(processed_data_folder, filename)
+        data.to_csv(filepath, index=False)
+
         return data
     except Exception as e:
         print(f"Error creating features: {e}")
